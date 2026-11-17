@@ -51,7 +51,7 @@ The team also presented a user-facing **Top-K prediction interface**. The [demo 
 
 ### Local differential privacy presentation
 
-As supporting academic course material, the team also prepared a presentation about **Local Differential Privacy (LDP)**: how data can be randomized on a user's device before sharing, balancing privacy and analytical utility. [View the LDP presentation (PDF)](docs/presentations/Local_Differential_Privacy_Presentation.pdf).
+As supporting academic course material, a related presentation covers **Local Differential Privacy (LDP)**: how data can be randomized on a user's device before sharing, balancing privacy and analytical utility. [View the LDP presentation (PDF)](docs/presentations/Local_Differential_Privacy_Presentation.pdf).
 
 **Scope note:** This is an educational presentation associated with the coursework. It is **not a claim that LDP was implemented or integrated into the predictive-model pipeline**.
 
