@@ -1,0 +1,17 @@
+# Third-party datasets and potentially sensitive content
+basic_datasets/
+datasets/
+*.csv
+*.parquet
+*.xlsx
+*.joblib
+*.pdf
+# Local runtime
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+.venv/
+venv/
+model/artifacts/
