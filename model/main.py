@@ -2,7 +2,7 @@ from __future__ import annotations
 """
 eurovision_pipeline.py
 
-Single entrypoint: preprocess -> train/eval, with one --top-k that propagates.
+Single entrypoint: preprocess → train/eval, with one --top-k that propagates.
 Saves CV metrics/preds and (optionally) final .joblib models in artifacts/<K>/.
 """
 
@@ -16,12 +16,11 @@ from train import (
     build_lr_pipeline,
     build_hgb_pipeline,
     evaluate_models_cv,
-    fit_and_save_final,
+    fit_and_save_final,   # <-- ensure this exists in train.py
 )
 
-
 def main():
-    p = argparse.ArgumentParser(description="End-to-end Eurovision pipeline (preprocess -> train/eval) with Top-K control.")
+    p = argparse.ArgumentParser(description="End-to-end Eurovision pipeline (preprocess → train/eval) with Top-K control.")
     p.add_argument("--input", type=Path, default=Path("datasets/final_merged.csv"), help="Raw CSV path.")
     p.add_argument("--top-k", type=int, default=2, help="Create label TopK = 1[place <= K].")
     p.add_argument("--out-dir", type=Path, default=None,
@@ -35,11 +34,13 @@ def main():
                    help="Fit final model(s) on all data and save .joblib to artifacts/<K>/")
     args = p.parse_args()
 
+    # Resolve output dir (match backend expectation)
     out_dir = args.out_dir or Path(f"model/artifacts/{args.top_k}")
     out_dir.mkdir(parents=True, exist_ok=True)
     out_clean = out_dir / "esc_clean.parquet"
-    out_meta = out_dir / "esc_features_meta.json"
+    out_meta  = out_dir / "esc_features_meta.json"
 
+    # 1) Preprocess with the given K
     _, meta = prepare_dataset(
         input_path=args.input,
         out_clean_path=out_clean,
@@ -51,6 +52,7 @@ def main():
     )
     print(f"[pipeline] Preprocessing done. Label={meta['label']}")
 
+    # 2) Train/Eval (use K from meta to ensure consistency)
     df, meta2 = load_data(out_clean, out_meta)
     X, y, groups, ids, used_k = build_X_y_groups(df, meta2, top_k_override=None)
 
@@ -69,9 +71,9 @@ def main():
     results = evaluate_models_cv(
         X, y, groups, ids, pipes,
         n_splits=args.cv_splits,
-        hits_k=used_k,
+        hits_k=used_k,          # make sure train.evaluate_models_cv accepts this
         ensemble=args.ensemble,
-        out_dir=out_dir,
+        out_dir=out_dir,        # writes cv_metrics.json & cv_predictions.csv into artifacts/<K>/
     )
 
     print("\n=== Aggregate CV metrics ===")
@@ -80,12 +82,12 @@ def main():
         print(f"{name:12s}  AUROC={m['AUROC_mean']:.3f} | AP={m['AP_mean']:.3f} | "
               f"F1+= {m['F1_pos_mean']:.3f} | {hits_key}={m[hits_key]:.2f} (folds={m['folds']})")
 
+    # 3) (Optional) Fit-final & save .joblib for the backend
     if args.fit_final:
         fit_and_save_final(X, y, pipes, out_dir, ensemble=args.ensemble)
         print(f"[pipeline] Saved final model(s) to: {out_dir.resolve()}")
 
     print("[pipeline] Done.")
-
 
 if __name__ == "__main__":
     main()
