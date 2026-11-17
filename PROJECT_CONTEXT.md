@@ -5,3 +5,5 @@ This is a collaborative academic study using Eurovision results as a practical d
 It was not a commercial product, production prediction service, or solo project. The shared work was completed by a three-person academic team at the Hebrew University of Jerusalem and published with teammates' permission.
 
 Source data, song lyrics, and reports containing student identifiers are intentionally excluded. See [README.md](README.md) for scope, methods, results, and limitations.
+
+Supporting course materials include an [interactive prediction demo](docs/presentations/Interactive_Prediction_Demo.pdf) and an [LDP presentation](docs/presentations/Local_Differential_Privacy_Presentation.pdf). The former documents a user-interface demonstration (not a hosted service); the latter is an educational presentation, not part of the ML pipeline.

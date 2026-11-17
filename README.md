@@ -41,6 +41,20 @@ Mean results across five held-out-year folds, from the original saved project ar
 
 The exact-winner task was harder than predicting broader Top-2 or Top-3 outcomes. **These are offline cross-validation scores, not production outcomes or guarantees for future contests.** See [the complete summary](results/cross_validation_summary.json).
 
+## Interactive demo and supporting coursework
+
+### Interactive prediction demo
+
+The team also presented a user-facing **Top-K prediction interface**. The [demo presentation](docs/presentations/Interactive_Prediction_Demo.pdf) describes a **React frontend with a FastAPI backend**, where users can enter song characteristics, select Top-1/Top-2/Top-3 and a model, and view predicted probabilities. It includes a screenshot of the interface.
+
+**Scope note:** The frontend/backend implementation is not part of the curated source files in this repository; the slides document the team's demonstration, not a currently hosted or independently verified production service.
+
+### Local differential privacy presentation
+
+As supporting academic course material, the team also prepared a presentation about **Local Differential Privacy (LDP)**: how data can be randomized on a user's device before sharing, balancing privacy and analytical utility. [View the LDP presentation (PDF)](docs/presentations/Local_Differential_Privacy_Presentation.pdf).
+
+**Scope note:** This is an educational presentation associated with the coursework. It is **not a claim that LDP was implemented or integrated into the predictive-model pipeline**.
+
 ## Skills illustrated
 
 - **Problem framing:** Translating a broad question into measurable outcomes and evaluation criteria.
